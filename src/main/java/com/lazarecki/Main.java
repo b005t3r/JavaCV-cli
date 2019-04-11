@@ -1,9 +1,8 @@
-package com.visualvertigo;
+package com.lazarecki;
 
 import org.apache.commons.cli.*;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.javacpp.avcodec;
-import org.bytedeco.javacpp.swscale;
 import org.bytedeco.javacv.*;
 import org.bytedeco.javacv.Frame;
 
@@ -12,10 +11,8 @@ import java.awt.color.ColorSpace;
 import java.awt.image.*;
 import java.io.File;
 import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.bytedeco.javacpp.avcodec.avcodec_find_decoder_by_name;
@@ -110,7 +107,23 @@ public class Main {
             avcodec.AVCodec enc = avcodec_find_encoder_by_name(encoder);
 
             IntPointer formats = enc.pix_fmts();
-            int selectedFormat = avcodec.avcodec_find_best_pix_fmt_of_list(formats, PIXEL_FORMAT, 0, null);
+
+            int selectedFormat;
+
+            int i = 0;
+            while (true) {
+                int format = formats.get(i++);
+
+                // always prefer yuv420p, if available
+                if(format == AV_PIX_FMT_YUV420P) {
+                    selectedFormat = AV_PIX_FMT_YUV420P;
+                    break;
+                }
+                if(format ==  AV_PIX_FMT_NONE) {
+                    selectedFormat = avcodec.avcodec_find_best_pix_fmt_of_list(formats, PIXEL_FORMAT, 0, null);
+                    break;
+                }
+            }
 
             recorder.setPixelFormat(selectedFormat);
             recorder.setVideoCodecName(encoder);
