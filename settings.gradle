@@ -1,2 +1,3 @@
 rootProject.name = 'JavaCV-cli'
+//javacpp.platform = 'macosx-x86_64'
 
