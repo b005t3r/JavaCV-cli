@@ -30,6 +30,8 @@ public class Main {
     private static final String HW_ACCELERATORS_OPTION = "hwaccels";
     private static final String DECODER_OPTION = "decoder";
     private static final String ENCODER_OPTION = "encoder";
+    private static final String DECODER_THREADS_OPTION = "decthreads";
+    private static final String ENCODER_THREADS_OPTION = "encthreads";
     private static final String HW_ACCELERATOR_OPTION = "hwaccel";
 
     private static final String[] HW_ACEELS = new String[] { "vdpau", "dxva2", "vda", "videotoolbox", "qsv", "vaapi", "cuvid" };
@@ -67,11 +69,13 @@ public class Main {
                 commandLine.getOptionValue(OUTPUT_OPTION),
                 commandLine.getOptionValue(HW_ACCELERATOR_OPTION),
                 commandLine.getOptionValue(DECODER_OPTION),
-                commandLine.getOptionValue(ENCODER_OPTION)
+                commandLine.getOptionValue(ENCODER_OPTION),
+                commandLine.hasOption(DECODER_THREADS_OPTION) ? Integer.parseInt(commandLine.getOptionValue(DECODER_THREADS_OPTION)) : 0,
+                commandLine.hasOption(ENCODER_THREADS_OPTION) ? Integer.parseInt(commandLine.getOptionValue(ENCODER_THREADS_OPTION)) : 0
             );
     }
 
-    private static void transcodeVideo(String inputPath, String outputPath, String hwDecodingAccelerator, String decoder, String encoder) throws FrameGrabber.Exception, FrameRecorder.Exception {
+    private static void transcodeVideo(String inputPath, String outputPath, String hwDecodingAccelerator, String decoder, String encoder, int decThreads, int encThreads) throws FrameGrabber.Exception, FrameRecorder.Exception {
         if(outputPath == null) {
             File outFile = new File(inputPath);
             String inName = outFile.getName();
@@ -93,7 +97,7 @@ public class Main {
         if(decoder != null)
             grabber.setVideoCodecName(decoder);
 
-        grabber.setVideoOption("threads", "auto");
+        grabber.setVideoOption("threads", String.valueOf(decThreads));
         grabber.setPixelFormat(PIXEL_FORMAT);
         grabber.start();
 
@@ -101,7 +105,7 @@ public class Main {
         recorder.setFormat(grabber.getFormat());
         recorder.setFrameRate(grabber.getFrameRate());
         recorder.setVideoBitrate(grabber.getVideoBitrate());
-        recorder.setVideoOption("threads", "auto");
+        recorder.setVideoOption("threads", String.valueOf(encThreads));
 
         if(encoder != null) {
             avcodec.AVCodec enc = avcodec_find_encoder_by_name(encoder);
@@ -313,6 +317,20 @@ public class Main {
                     .desc("use selected encoder")
                     .hasArg()
                     .argName("encoder_name")
+                    .build()
+            )
+            .addOption(
+                Option.builder(DECODER_THREADS_OPTION)
+                    .desc("use that many threads when decoding (0 for auto selection)")
+                    .hasArg()
+                    .argName("thread_count")
+                    .build()
+            )
+            .addOption(
+                Option.builder(ENCODER_THREADS_OPTION)
+                    .desc("use that many threads when decoding (0 for auto selection)")
+                    .hasArg()
+                    .argName("thread_count")
                     .build()
             )
             .addOption(
