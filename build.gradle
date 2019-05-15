@@ -16,18 +16,29 @@ dependencies {
 
     compile group: 'commons-cli', name: 'commons-cli', version: '1.4'
 
-    //compile group: 'org.bytedeco', name: 'javacv-platform', version: '1.4.4'
-    compile('org.bytedeco:javacv-platform:1.4.4') {
-        exclude group: 'org.bytedeco', module: 'flycapture-platform'
-        exclude group: 'org.bytedeco', module: 'libdc1394-platform'
-        exclude group: 'org.bytedeco', module: 'libfreenect-platform'
-        exclude group: 'org.bytedeco', module: 'ibfreenect2-platform'
-        exclude group: 'org.bytedeco', module: 'librealsense-platform'
-        exclude group: 'org.bytedeco', module: 'videoinput-platform'
-        exclude group: 'org.bytedeco', module: 'artoolkitplus-platform'
-        exclude group: 'org.bytedeco', module: 'flandmark-platform'
-        exclude group: 'org.bytedeco', module: 'leptonica-platform'
-        exclude group: 'org.bytedeco', module: 'tesseract-platform'
+    compile (group: 'org.bytedeco', name: 'javacv-platform', version: '1.4.4') {
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'opencv'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'opencv-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'flycapture'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'flycapture-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'libdc1394'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'libdc1394-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'libfreenect'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'libfreenect-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'libfreenect2'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'libfreenect2-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'librealsense'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'librealsense-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'videoinput'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'videoinput-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'artoolkitplus'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'artoolkitplus-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'flandmark'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'flandmark-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'leptonica'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'leptonica-platform'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'tesseract'
+        exclude group: 'org.bytedeco.javacpp-presets', module: 'tesseract-platform'
     }
 }
 
