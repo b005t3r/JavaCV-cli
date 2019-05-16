@@ -102,7 +102,7 @@ public class Main {
         grabber.start();
 
         FFmpegFrameRecorder recorder = new FFmpegFrameRecorder(outputPath, grabber.getImageWidth(), grabber.getImageHeight());
-        recorder.setFormat(grabber.getFormat());
+        //recorder.setFormat(grabber.getFormat());
         recorder.setFrameRate(grabber.getFrameRate());
         recorder.setVideoBitrate(grabber.getVideoBitrate());
         recorder.setVideoOption("threads", String.valueOf(encThreads));
